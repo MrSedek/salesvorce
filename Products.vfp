@@ -1,0 +1,51 @@
+﻿<apex:page controller="Products"  sidebar="false" >
+<apex:slds />
+		<table class="slds-table_bordered slds-table_cell-buffer" width="100%" htight="100%">
+			<thead>
+				<tr class="slds-text-title_caps">
+					<th scope="col" width="20%" >
+						<div class="slds-truncate" title="Изображение" align="center" >Изображение</div>
+					</th>
+					<th scope="col" width="10%" >
+						<div class="slds-truncate" title="Name"  align="center"></div>
+					</th>
+					<th scope="col" width="50%" >
+						<div class="slds-truncate" title="Описание"  align="center">Описание</div>
+					</th>
+					<th scope="col" width="10%" >
+						<div class="slds-truncate" title="Стоимость"  align="center">Стоимость</div>
+					</th>
+					<th scope="col" width="10%" >
+						<div class="slds-truncate" title="Button Buy"  align="center"></div>
+					</th>
+				</tr>
+			</thead>
+<tbody>
+	<apex:repeat value="{!MyProduct}" var="pr" id="theRepeat">
+		<tr valign="middle">
+        		<td scope="row" data-label="Product Image">
+				<div class="slds-truncate" title="{!pr.Name}"   align="center" ><a href="https://c.ap4.visual.force.com/apex/ProductDetails?id={!pr.Id}"><img src="{!pr.Image_URL__c}" alt="{!pr.Name}" width="250" height="250" ></img></a></div>
+		        </td>
+        		<td data-label="Product Name" style="vertical-align:middle" >
+            			<div class="slds-truncate" title="{!pr.Name}"   align="center"><a href="https://c.ap4.visual.force.com/apex/ProductDetails?id={!pr.Id}">{!pr.Name}</a></div>
+		        </td> 
+		        <td data-label="Product Description" style="vertical-align:middle;align:justify;">
+			        <div title="{!pr.Product_Description__c}" >{!pr.Product_Description__c}<a href="https://c.ap4.visual.force.com/apex/ProductDetails?id={!pr.Id}">{!IF(contains(pr.Product_Description__c, "...   "), "more", "")}</a></div>
+		        </td>
+		        <td data-label="Product Price"  style="vertical-align:middle">
+			        <div class="slds-truncate" title="{!pr.Unit_Price__c}"   align="center">{!pr.Unit_Price__c}</div>
+		        </td> 
+		        <td data-label="Button Buy"  style="vertical-align:middle" >
+			        <div class="slds-truncate" title="{!pr.Unit_Price__c}"   align="center">
+	                		<apex:form >
+        		        		<apex:commandButton StyleClass="slds-button slds-button_brand"  action="https://c.ap4.visual.force.com/apex/ProductDetails?id={!pr.Id}" value="Buy"/> 
+			                </apex:form>
+				</div>
+			</td> 
+		</tr>
+	</apex:repeat>
+
+</tbody>
+</table>
+
+</apex:page>

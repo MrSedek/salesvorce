@@ -1,0 +1,82 @@
+﻿<apex:page controller="ProductBuy"  sidebar="false" lightningStylesheets="true" docType="html-5.0">
+<!-- <apex:page standardStylesheets="false"  sidebar="false"  applyBodyTag="false" docType="html-5.0"> -->
+<apex:slds />
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+</html>
+  <header>
+    <h2 class="slds-text-heading_medium" align="center" style="background:#eee; padding:10px; top:-20px; align:center; box-shadow: 0 0 10px rgba(0,0,0,0.5);"> {!ProdDetails.Name} </h2>
+  </header>
+
+<apex:form >
+<div class="slds-grid slds-wrap" style="margin-right:10px; margin-left:10px;">
+    <div class="slds-size_1-of-4" style="text-align:right; padding:10px; ">
+        <label class="slds-form-element__label" for="input_email" >Email:</label>
+    </div>
+    <div class="slds-size_1-of-4" style="text-align:left; padding:5px; ">
+        <apex:inputText id="input_email" StyleClass="slds-input" style="width:50%;" value="{!email}"/>
+<!--        Phone <apex:inputText value="{!email}" /> -->
+    </div>
+    <div class="slds-size_1-of-4"  style="text-align:right; padding:10px;">
+        <label class="slds-form-element__label" >Название:</label>
+    </div>
+    <div class="slds-size_1-of-4" style="text-align:left; padding:5px; ">
+        <span class="slds-form-element__static">{!ProdDetails.Name}</span>
+    </div>  
+<!-- 2 строка-->  
+    <div class="slds-size_1-of-4" style="text-align:right; padding:10px; ">
+        <label class="slds-form-element__label" for="input_FirstName" >Имя:</label>
+    </div>
+    <div class="slds-size_1-of-4" style="text-align:left; padding:5px; ">
+        <apex:inputText id="input_FirstName" StyleClass="slds-input" style="width:50%;" value="{!firstName}"/>
+<!--        First Name <apex:inputText value="{!firstName}" /> -->
+    </div>
+    <div class="slds-size_1-of-4"  style="text-align:right; padding:10px;">
+        <label class="slds-form-element__label" >Стоимость:</label>
+    </div>
+    <div class="slds-size_1-of-4" style="text-align:left; padding:5px; ">
+        <span class="slds-form-element__static">{!ProdDetails.Unit_Price__c}</span>
+    </div>  
+<!-- 3 строка-->  
+    <div class="slds-size_1-of-4" style="text-align:right; padding:10px;">
+        <label class="slds-form-element__label" for="input_LastName">
+        <abbr class="slds-required" title="required">*</abbr>Фамилия:</label>
+    </div>
+    <div class="slds-size_1-of-4" style="text-align:left; padding:5px; ">
+        <apex:inputText id="input_LastName" StyleClass="slds-input" style="width:50%;" value="{!lastName}"/>
+    </div>
+    <div class="slds-size_1-of-4"  style="text-align:right; padding:10px;">
+        <label class="slds-form-element__label" for="input_Count" >Количество:</label>
+    </div>
+    <div class="slds-size_1-of-4" style="text-align:left; padding:5px; ">
+            <apex:input type="number" StyleClass="slds-input" html-min="1" value="{!unit}" style="width:50%;">
+                <apex:actionSupport event="onkeyup" reRender="outname,messagesForm1" />
+                <apex:actionSupport event="onchange" reRender="outname,messagesForm1" />
+            </apex:input>
+        
+    </div>  
+<!-- 4 строка-->  
+    <div class="slds-size_1-of-4" style="text-align:right; padding:10px; ">
+    </div>
+    <div class="slds-size_1-of-4" style="text-align:left; padding:10px; ">
+    </div>
+    <div class="slds-size_1-of-4"  style="text-align:right; padding:10px;">
+        <label class="slds-form-element__label">Итого:</label>
+    </div>
+    <div class="slds-size_1-of-4" style="text-align:left; padding:10px; ">
+        <apex:outputText id="outname" style="font-weight:bold" value="{!(unit*ProdDetails.Unit_Price__c)}" />
+
+    </div>  
+
+</div>  
+
+<div style="height: 180px;">
+    <div class="slds-docked-form-footer">
+
+            <apex:commandButton StyleClass="slds-button slds-button_neutral"  action="https://c.ap4.visual.force.com/apex/Products" value="Отмена"/> 
+            <apex:commandButton StyleClass="slds-button slds-button_brand"  action="{!buy}" value="Оформить заказ"/> 
+    </div>
+</div>
+
+</apex:form>
+
+</apex:page>

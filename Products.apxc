@@ -1,0 +1,36 @@
+public class Products {
+    public List<Product_Table__c> myProduct {get; set;}
+    Product_Table__c product;
+    public Products (){
+        myProduct = [SELECT Id, Name, Image_URL__c, Product_Description__c, Unit_Price__c,  Currents__c, Warehouse__c FROM Product_Table__c];
+        abb();
+    }
+
+    public List <Product_Table__c> getmyProduct() {
+        return myProduct;
+    }
+
+    public void abb(){
+        for(Product_Table__c item : myProduct ){
+            if (item.Product_Description__c == null){
+                item.Product_Description__c = '';
+            }
+            else if(item.Product_Description__c.Length() >100){              
+                item.Product_Description__c = item.Product_Description__c.abbreviate(100) + '   ';
+            }   
+       }
+    }    
+    
+    public PageReference getBuy() {
+        PageReference acctPage = new ApexPages.StandardController(product).view();
+        acctPage.setRedirect(true);
+        return acctPage;
+    }
+    
+    public PageReference buy() {
+        // Send the user to the detail page for the new account.
+        PageReference acctPage = new ApexPages.StandardController(product).view();
+        acctPage.setRedirect(true);
+        return acctPage;
+    }    
+}

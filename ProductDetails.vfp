@@ -1,0 +1,37 @@
+﻿<apex:page controller="ProductDetails"  sidebar="false" lightningStylesheets="true" docType="html-5.0">
+<apex:slds />
+	<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"></html>
+<header>
+	<h2 class="slds-text-heading_medium" align="center" style="background:#eee; padding:10px; top:-20px; align:center; box-shadow: 0 0 10px rgba(0,0,0,0.5);"> {!ProdDetails.Name} </h2>
+</header>
+
+<div class="slds-grid slds-wrap">
+	<div class="slds-size_1-of-2" style="text-align:right;">
+		<apex:image value="{!ProdDetails.Image_URL__c}" width="350"/>
+	</div>
+	<div class="slds-size_1-of-2" style="margin-top:10px;">
+        	<div class="Стоимость">
+           		<b><apex:outputText >Стоимость:</apex:outputText> </b>
+		        <br/> 
+           		<apex:outputText >{!ProdDetails.Unit_Price__c }</apex:outputText>  
+	        </div>
+        <div class="Description">
+		<br/>
+            	<b><apex:outputText >Описание:</apex:outputText> </b>
+            	<br/> 
+            	<apex:outputText >{!ProdDetails.Product_Description__c}</apex:outputText>  
+        </div>
+  </div>  
+</div>  
+
+
+<div style="height: 180px;">
+	<div class="slds-docked-form-footer">
+	<apex:form >
+		<apex:commandButton StyleClass="slds-button slds-button_neutral"  action="https://c.ap4.visual.force.com/apex/Products" value="К каталогу"/> 
+	        <apex:commandButton StyleClass="slds-button slds-button_brand"  action="https://c.ap4.visual.force.com/apex/ProductBuy?id={!ProdDetails.Id}" value="Buy"/> 
+        </apex:form>
+    </div>
+</div>
+
+</apex:page>

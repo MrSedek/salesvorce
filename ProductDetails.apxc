@@ -1,0 +1,9 @@
+﻿public class ProductDetails {
+    public List<Product_Table__c> myProduct {get; set;}
+    
+    Product_Table__c ProdDetails;
+    
+    public Product_Table__c getProdDetails () {
+        return [SELECT Id, Name, Image_URL__c, Unit_Price__c, Product_Description__c FROM Product_Table__c WHERE Id = :ApexPages.currentPage().getParameters().get('Id')];
+    }
+}

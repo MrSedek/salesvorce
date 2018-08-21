@@ -1,0 +1,98 @@
+﻿public class ProductBuy {
+
+    public Double unit { get; set; } 
+    public String firstName{get;set;}
+    public String lastName{get;set;}
+    public String email{get;set;}
+        
+    list <contact> conList;
+    list <Order_Table__c> ordlist;
+    Order_Table__c OrderBuy;
+    Product_Table__c ProdDetails;
+    Contact contactDetails;
+    
+    public Double getUnit (){
+    return unit;
+    }
+    
+    //получить данные по товару
+    public Product_Table__c getProdDetails () {
+        return [SELECT Id, Name, Image_URL__c, Unit_Price__c, Product_Description__c FROM Product_Table__c WHERE Id = :ApexPages.currentPage().getParameters().get('id') LIMIT 100];
+    }
+    
+    // конструктор класса            
+    public ProductBuy(){
+       conlist = new List<contact>();
+       ordlist = new List<Order_Table__c>();
+       ProdDetails = [SELECT Id, Name, Image_URL__c, Unit_Price__c, Product_Description__c, Currents__c FROM Product_Table__c WHERE Id = :ApexPages.currentPage().getParameters().get('id') LIMIT 100];
+    }
+
+    //нажатие кнопки купить
+    public pageReference Buy(){
+        if ((ProdDetails.Currents__c - unit) >= 0 ){
+        List <Contact> countContact = [SELECT FirstName, LastName, Email, Id FROM Contact WHERE Email= :email];
+        
+            if (countContact.size()<1) {
+                addContact();
+            }
+            else {
+                updateContact();
+            }
+            addOrder();
+            updateProductTable();
+            PageReference acctPage = new PageReference('/apex/Thanks');
+            acctPage.setRedirect(true);
+            return acctPage;
+        }
+        else {
+            PageReference acctPage = new PageReference('/apex/NoThanks');
+            acctPage.setRedirect(true);
+            return acctPage;
+        }        
+   }
+   
+    //добавить контакт
+    public void addContact() {
+        Contact con = new Contact(firstname=firstname, lastname=lastname, email=email);
+        conList.add(con);
+        insert conList;
+   }
+   
+   //обновить контакт, если Email существует
+   public void updateContact() {
+        Contact contactToUpdate;
+        try {
+            contactToUpdate = [SELECT FirstName, LastName, Email FROM Contact 
+                                WHERE Email= :email LIMIT 1];
+            contactToUpdate.FirstName = firstname;
+            contactToUpdate.LastName = lastname;
+            update contactToUpdate;
+            
+        } catch(DmlException e) {
+            System.debug('An unexpected error has occurred: ' + e.getMessage());
+        }
+
+   }
+
+   //обновить количество товара
+   public void updateProductTable() {
+        Product_Table__c productToUpdate;
+        try {
+            productToUpdate = [SELECT Id, Name, Image_URL__c, Unit_Price__c, Product_Description__c, Currents__c FROM Product_Table__c WHERE Id = :ApexPages.currentPage().getParameters().get('id') LIMIT 1];
+            productToUpdate.Currents__c = productToUpdate.Currents__c - unit;
+            update productToUpdate;
+            
+        } catch(DmlException e) {
+            System.debug('An unexpected error has occurred: ' + e.getMessage());
+        }
+   }
+    
+    //добавить заказ
+    public void addOrder(){
+        contactDetails = [SELECT Id, FirstName, LastName, Email FROM Contact WHERE Email= :email LIMIT 1];
+        Order_Table__c ord = new Order_Table__c(Product__c=ProdDetails.Id, Units__c = unit, Order_Amount__c = unit*ProdDetails.Unit_Price__c, Contact__c = contactDetails.Id);
+        ordList.add(ord);
+        insert ordList;
+    }
+
+}
